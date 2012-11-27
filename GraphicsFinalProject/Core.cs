@@ -63,16 +63,6 @@ namespace GraphicsFinalProject
         }
 
         /**
-         * Updates the current state of the Program
-         */
-        public static int counter = 0;
-        public static int maxCount = 0;
-
-        public static void update()
-        {
-            
-        }
-        /**
          * Uninitializes my OpenGL Stuff
          */
         private static void uninitGL()

@@ -129,11 +129,16 @@ namespace GraphicsFinalProject
         
         }
 
+        public void update()
+        {
+
+        }
+
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
 
-            Core.update();
+            update();
 
             //GL.LoadIdentity();
 
@@ -145,7 +150,7 @@ namespace GraphicsFinalProject
 
             camera.applyRotation();
 
-            /*GL.Begin(BeginMode.Triangles);
+            GL.Begin(BeginMode.Triangles);
                 GL.Color3(1.0f, 0.0f, 0.0f);
                 GL.Vertex3(-3.0f, 0.0f, 0.0f);
 
@@ -154,7 +159,7 @@ namespace GraphicsFinalProject
 
                 GL.Color3(0.0f, 0.0f, 1.0f);
                 GL.Vertex3(3.0f, 0.0f, 0.0f);
-            GL.End();*/
+            GL.End();
 
             for (int index = 0; index < models.Count; index++)
             {
