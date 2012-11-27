@@ -19,6 +19,10 @@ namespace GraphicsFinalProject
         public int yIndex;
         public int zIndex;
 
+        public int normalXIndex;
+        public int normalYIndex;
+        public int normalZIndex;
+
         public int redIndex;
         public int greenIndex;
         public int blueIndex;
@@ -26,14 +30,18 @@ namespace GraphicsFinalProject
 
         public PLYFileHeader()
         {
-            xIndex = -1;
-            yIndex = -1;
-            zIndex = -1;
+            this.xIndex = -1;
+            this.yIndex = -1;
+            this.zIndex = -1;
 
-            redIndex = -1;
-            greenIndex = -1;
-            blueIndex = -1;
-            alphaIndex = -1;
+            this.normalXIndex = -1;
+            this.normalYIndex = -1;
+            this.normalZIndex = -1;
+
+            this.redIndex = -1;
+            this.greenIndex = -1;
+            this.blueIndex = -1;
+            this.alphaIndex = -1;
         }
     }
 

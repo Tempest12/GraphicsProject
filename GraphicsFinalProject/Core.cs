@@ -44,6 +44,8 @@ namespace GraphicsFinalProject
         private static void initGL()
         {
             window = new RenderWindow();
+
+            numberGenerator = new Random();
         }
 
         public static void restart()
@@ -53,6 +55,10 @@ namespace GraphicsFinalProject
 
         public static void startGameLoop()
         {
+            //Test
+            CornerTableMesh model = new CornerTableMesh(Config.getValue("model", "model_filename"));
+            window.addModel(model);
+
             window.Run(60);
         }
 

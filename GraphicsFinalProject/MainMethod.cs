@@ -31,8 +31,10 @@ namespace GraphicsFinalProject
          */
         public static void test()
         {
+
+
             //Test the Config
-            Config.DebugPrint();
+            //Config.DebugPrint();
 
             //Test the Logger
             //Log.writeDebug("Debuging out");

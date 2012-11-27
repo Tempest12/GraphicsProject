@@ -15,6 +15,9 @@ namespace GraphicsFinalProject
 {
     public class RenderWindow : GameWindow
     {
+        //Mesh Stuff
+        private List<CornerTableMesh> models;
+
         //Camrea Stuff
         public Camera camera;
         
@@ -47,6 +50,8 @@ namespace GraphicsFinalProject
             this.Mouse.ButtonDown += handleMouseButtonDown;
             this.Mouse.ButtonUp += handleMouseButtonUp;
             this.Mouse.Move += handleMouseMove;
+
+            this.models = new List<CornerTableMesh>();
         }
 
         public void handleMouseButtonUp(object sender, MouseButtonEventArgs mbea)
@@ -140,7 +145,7 @@ namespace GraphicsFinalProject
 
             camera.applyRotation();
 
-            GL.Begin(BeginMode.Triangles);
+            /*GL.Begin(BeginMode.Triangles);
                 GL.Color3(1.0f, 0.0f, 0.0f);
                 GL.Vertex3(-3.0f, 0.0f, 0.0f);
 
@@ -149,7 +154,12 @@ namespace GraphicsFinalProject
 
                 GL.Color3(0.0f, 0.0f, 1.0f);
                 GL.Vertex3(3.0f, 0.0f, 0.0f);
-            GL.End();
+            GL.End();*/
+
+            for (int index = 0; index < models.Count; index++)
+            {
+                models[index].draw();
+            }
  
             this.SwapBuffers();
         }
@@ -173,6 +183,11 @@ namespace GraphicsFinalProject
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 1.0f, 64.0f);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
+        }
+
+        public void addModel(CornerTableMesh model)
+        {
+            this.models.Add(model);
         }
     }
 }

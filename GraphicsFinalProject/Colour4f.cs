@@ -23,5 +23,13 @@ namespace GraphicsFinalProject
         public Colour4f(float red, float green, float blue) : this(red, green, blue, 1.0f)
         {            
         }
+
+        public Colour4f(Colour4f that)
+        {
+            this.red = that.red;
+            this.green = that.green;
+            this.blue = that.blue;
+            this.alpha = that.alpha;
+        }
     }
 }

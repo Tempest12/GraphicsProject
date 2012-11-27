@@ -26,7 +26,8 @@ namespace GraphicsFinalProject
             }
             catch (FileNotFoundException fnfe)
             {
-               MainMethod.reportError("PolygonFilePasrer.parsePLYFile : Error could not find file. Exception message:" + fnfe.Message); 
+               MainMethod.reportError("PolygonFilePasrer.parsePLYFile : Error could not find file. Exception message:" + fnfe.Message);
+               return;
             }
 
             PLYFileHeader header = new PLYFileHeader();
@@ -37,63 +38,139 @@ namespace GraphicsFinalProject
                 return;
             }
 
+            List<Colour4f> colourList = new List<Colour4f>();
             OpenTK.Vector3 tempPosition = new OpenTK.Vector3(0.0f, 0.0f, 0.0f);
-            Colour4f tempColour4f = new Colour4f(0.0f, 0.0f, 0.0f, 0.0f);
+            OpenTK.Vector3 tempNormal = new OpenTK.Vector3(0.0f, 0.0f, 0.0f);
+            Colour4f tempColour = new Colour4f(0.0f, 0.0f, 0.0f, 0.0f);
+            int vertexIndex = 0;
+            int faceIndex = 0;
+            int triangleIndex = 0;
 
             while (reader.Peek() > -1)
             {
                 temp = getNewLine(reader, ref lineNumber);
                 //First Parse Vertices
-                if (header.vertexCount > 0)
+                if (vertexIndex < header.vertexCount)
                 {
                     if (String.IsNullOrWhiteSpace(temp))
                     {
                         continue;
                     }
 
+                    vertexIndex++;
+
                     tempPosition.X = 0.0f;
                     tempPosition.Y = 0.0f;
                     tempPosition.Z = 0.0f;
 
-                    tempColour4f.red = Config.convertSettingToFloat("colours", "corner_default_red");
-                    tempColour4f.green = Config.convertSettingToFloat("colours", "corner_default_green");
-                    tempColour4f.blue = Config.convertSettingToFloat("colours", "corner_default_blue");
-                    tempColour4f.alpha = Config.convertSettingToFloat("colours", "corner_default_alpha");
+                    tempColour.red = Config.convertSettingToFloat("colours", "corner_default_red");
+                    tempColour.green = Config.convertSettingToFloat("colours", "corner_default_green");
+                    tempColour.blue = Config.convertSettingToFloat("colours", "corner_default_blue");
+                    tempColour.alpha = Config.convertSettingToFloat("colours", "corner_default_alpha");
 
                     string[] pieces = temp.Split(' ');
 
                     if (header.xIndex >= 0)
                     {
-                        //tempPosition.X = float.p  (pieces[header.xIndex]);   
+                        tempPosition.X = float.Parse(pieces[header.xIndex]);   
                     }
                     if (header.yIndex >= 0)
                     {
-
+                        tempPosition.Y = float.Parse(pieces[header.yIndex]);
                     }
                     if (header.zIndex >= 0)
                     {
-
+                        tempPosition.Z = float.Parse(pieces[header.zIndex]);
+                    }
+                    if(header.normalXIndex >= 0)
+                    {
+                        tempNormal.X = float.Parse(pieces[header.normalXIndex]);
+                    }
+                    if(header.normalYIndex >= 0)
+                    {
+                        tempNormal.Y = float.Parse(pieces[header.normalYIndex]);
+                    }
+                    if(header.normalZIndex >= 0)
+                    {
+                        tempNormal.Z = float.Parse(pieces[header.normalZIndex]);
                     }
                     if (header.redIndex >= 0)
                     {
-
+                        tempColour.red = float.Parse(pieces[header.redIndex]);
                     }
                     if (header.greenIndex >= 0)
                     {
-
+                        tempColour.green = float.Parse(pieces[header.greenIndex]);
                     }
                     if (header.blueIndex >= 0)
                     {
-
+                        tempColour.blue = float.Parse(pieces[header.blueIndex]);
                     }
                     if (header.alphaIndex >= 0)
                     {
-
+                        tempColour.alpha = float.Parse(pieces[header.alphaIndex]);
                     }
-                }
-                else if (header.faceCount > 0)
-                {
 
+                    if(header.normalXIndex != -1 && header.normalYIndex != -1 && header.normalZIndex != -1)
+                    {
+                        container.normals.Add(new OpenTK.Vector3(tempNormal));
+                    }
+
+                    container.vertices.Add(new OpenTK.Vector3(tempPosition));
+                    colourList.Add(new Colour4f(tempColour));
+                }
+                else if (faceIndex < header.faceCount)
+                {
+                    if (String.IsNullOrWhiteSpace(temp))
+                    {
+                        continue;
+                    }
+
+                    String[] pieces = temp.Split(' ');
+
+                    if (pieces.Length <= 4)
+                    {
+                        MainMethod.reportError("Not enough information on line: " + lineNumber + " to make a face.");
+                        continue;
+                    }
+
+                    faceIndex++;
+
+                    if (pieces[0] == "3")
+                    {
+                        Corner tempCornerOne = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
+                        Corner tempCornerTwo = new Corner(int.Parse(pieces[2]), container.vertices[int.Parse(pieces[2])], colourList[int.Parse(pieces[2])], triangleIndex);
+                        Corner tempCornerThree = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
+
+                        container.triangles.Add(tempCornerOne);
+                        container.triangles.Add(tempCornerTwo);
+                        container.triangles.Add(tempCornerThree);
+                        triangleIndex++;
+                    }
+                    else if (pieces[1] == "4")
+                    {
+                        Corner tempCornerOne = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
+                        Corner tempCornerTwo = new Corner(int.Parse(pieces[2]), container.vertices[int.Parse(pieces[2])], colourList[int.Parse(pieces[2])], triangleIndex);
+                        Corner tempCornerThree = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
+                        triangleIndex++;
+
+                        Corner tempCornerFour = new Corner(int.Parse(pieces[2]), container.vertices[int.Parse(pieces[2])], colourList[int.Parse(pieces[2])], triangleIndex);
+                        Corner tempCornerFive = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
+                        Corner tempCornerSix = new Corner(int.Parse(pieces[4]), container.vertices[int.Parse(pieces[4])], colourList[int.Parse(pieces[4])], triangleIndex);
+                        triangleIndex++;
+
+                        container.triangles.Add(tempCornerOne);
+                        container.triangles.Add(tempCornerTwo);
+                        container.triangles.Add(tempCornerThree);
+                        
+                        container.triangles.Add(tempCornerFour);
+                        container.triangles.Add(tempCornerFive);
+                        container.triangles.Add(tempCornerSix);
+                    }
+                    else
+                    {
+                        MainMethod.reportError("Error program does not support meshes that are not quads or triangles");
+                    }
                 }
                 else
                 {
@@ -187,6 +264,21 @@ namespace GraphicsFinalProject
                                 header.vertexPropertyCount++;
                                 break;
 
+                            case "nx":
+                                header.normalXIndex = header.vertexPropertyCount;
+                                header.vertexPropertyCount++;
+                                break;
+
+                            case "ny":
+                                header.normalYIndex = header.vertexPropertyCount;
+                                header.vertexPropertyCount++;
+                                break;
+
+                            case "nz":
+                                header.normalZIndex = header.vertexPropertyCount;
+                                header.vertexPropertyCount++;
+                                break;
+
                             case "red":
                                 header.redIndex = header.vertexPropertyCount;
                                 header.vertexPropertyCount++;
@@ -211,7 +303,7 @@ namespace GraphicsFinalProject
                 }          
             }
 
-            if (reader.Peek() > -1)
+            if (reader.Peek() <= -1)
             {
                 MainMethod.reportError("Warning ply file header does not end.");
                 return -1;
