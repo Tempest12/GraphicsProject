@@ -175,11 +175,12 @@ namespace GraphicsFinalProject
                 
                 for (int indexToo = 0; indexToo < triangles.Count; indexToo += 1)
                 {
-                    if (triangles[ index].next.vertexIndex == triangles[ indexToo].prev.vertexIndex)
+                    if (triangles[ index].next.vertex == triangles[ indexToo].prev.vertex)
                     {
-                        if (triangles[ index].prev.vertexIndex == triangles[ indexToo].next.vertexIndex)
+                        if (triangles[ index].prev.vertex == triangles[ indexToo].next.vertex)
                         {
                             triangles[ index].opposite = triangles[ indexToo];
+                            break;
                         }
                     }
                 }
@@ -190,9 +191,49 @@ namespace GraphicsFinalProject
             for (int index = 0; index < triangles.Count; index += 1)
             {
                         triangles[index].right = triangles[index].prev.opposite;
-                        triangles[index].left = triangles[index].next.opposite ;
+                        triangles[index].left = triangles[index].next.opposite;
             }
 
         }
+
+
+        /*public void operationGreenThumb()
+        {
+            Corner seed = selectedCorner; // start at the seed corner s
+            
+            // mark vertices as visited
+            seed.visited = true;
+            seed.next.visited = true;
+            seed.prev.visited = true;
+
+            //First step
+            seed = seed.right;
+
+            while (seed != selectedCorner)
+            {
+                if (!seed.visited)
+                {
+                    seed.visited = true;
+                    seed.next.visited = true;
+                    seed.prev.visited = true;
+                    seed = seed.right;
+                }
+                else if (!c.t.m) c = c.o; // go back one triangle
+                c = c.r; // advance to next ring edge on the right
+            } // until back at the beginning
+
+
+
+
+            c = s; // start at the seed corner s
+            c.n.v.m = c.p.v.m = true; // mark vertices as visited
+            do
+            {
+                if (!c.v.m) c.v.m = c.t.m = true; // invade c.t
+                else if (!c.t.m) c = c.o; // go back one triangle
+                c = c.r; // advance to next ring edge on the right
+            } while (c != s.o); // until back at the beginning
+
+        }*/
     }
 }
