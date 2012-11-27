@@ -147,7 +147,7 @@ namespace GraphicsFinalProject
                         container.triangles.Add(tempCornerThree);
                         triangleIndex++;
                     }
-                    else if (pieces[1] == "4")
+                    else if (pieces[0] == "4")
                     {
                         Corner tempCornerOne = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
                         Corner tempCornerTwo = new Corner(int.Parse(pieces[2]), container.vertices[int.Parse(pieces[2])], colourList[int.Parse(pieces[2])], triangleIndex);
