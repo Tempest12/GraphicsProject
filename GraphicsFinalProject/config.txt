@@ -1,0 +1,89 @@
+section log
+{
+	#Log Levels are as follows:
+	# 0 - Debug and up
+	# 1 - Info and up
+	# 2 - Error and up
+	# 3 - Fatal and up
+	# 4 - Special and up
+	default_level 0
+}
+
+section window
+{
+	title 6941_Final_Project
+	
+	width 600
+	height 600
+}
+	
+section model
+{
+	model_filename test.ply
+	
+	lighting yes
+}	
+	
+section colours
+{
+	#Background Colour	
+	bg_red 0.0
+	bg_green 0.0
+	bg_blue 0.0
+	bg_alpha 1.0
+	
+	#Default Corner Colour
+	corner_default_red 0.85
+	corner_default_green 0.85
+	corner_default_blue 0.85
+	corner_default_alpha 0.85
+	
+	light_one_ambient_red 1.0
+	light_one_ambient_green 1.0
+	light_one_ambient_blue 1.0
+	light_one_ambient_alpha 1.0
+	
+	light_one_diffuse_red 1.0
+	light_one_diffuse_green 1.0
+	light_one_diffuse_blue 1.0
+	light_one_diffuse_alpha 1.0
+	
+	light_one_specular_red 1.0
+	light_one_specular_green 1.0
+	light_one_specular_blue 1.0
+	light_one_specular_alpha 1.0
+}
+
+section lights
+{
+	ambient_light_level 0.2
+
+	one_x 0.0
+	one_y 0.0
+	one_z -5.0
+	one_w 0.0
+}
+
+section camera
+{
+	position_x 0.0
+	position_y 0.0
+	position_z -30.0
+	
+	focus_x 0.0
+	focus_y 0.0
+	focus_z 0.0
+	
+	up_x 0.0
+	up_y 1.0
+	up_z 0.0
+	
+	rotate_speed 0.65
+
+	invert_y no
+}
+
+section die_options
+{
+	print_stack_trace yes
+}
