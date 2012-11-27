@@ -119,6 +119,43 @@ namespace GraphicsFinalProject
                 case Key.Right:
 
                     break;
+
+
+                // Select Next Corner
+                case Key.N:
+
+                    models[0].selectedCorner = models[0].selectedCorner.next;
+
+                    break;
+
+                // Select Previous Corner
+                case Key.P:
+
+                    models[0].selectedCorner = models[0].selectedCorner.prev;
+
+                    break;
+
+                // Select Opposite Corner
+                case Key.O:
+
+                    models[0].selectedCorner = models[0].selectedCorner.opposite;
+
+                    break;
+
+                // Select Right Corner
+                case Key.R:
+
+                    models[0].selectedCorner = models[0].selectedCorner.right;
+
+                    break;
+
+                // Select Left Corner
+                case Key.L:
+
+                    models[0].selectedCorner = models[0].selectedCorner.left;
+
+                    break;
+
             }
         }
 

@@ -13,6 +13,8 @@ namespace GraphicsFinalProject
         public List<OpenTK.Vector3> vertices;
         public List<OpenTK.Vector3> normals;
 
+        public Corner selectedCorner;
+
         public List<Corner> triangles;
 
         public bool hasNormals = false;
@@ -39,10 +41,29 @@ namespace GraphicsFinalProject
 
                 buildCornerInformation();
             }
+
+            selectedCorner = triangles[0];
         }
+
 
         public void draw()
         {
+            //Draw Selected here
+            GL.Begin(BeginMode.Lines);
+            {
+                //Draw One Line here
+                GL.Color4( Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
+                GL.Vertex3(selectedCorner.vertex.X, selectedCorner.vertex.Y, selectedCorner.vertex.Z);
+                GL.Vertex3(selectedCorner.next.vertex.X, selectedCorner.next.vertex.Y, selectedCorner.next.vertex.Z);
+
+                //Draw the other line
+                GL.Color4(Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
+                GL.Vertex3(selectedCorner.vertex.X, selectedCorner.vertex.Y, selectedCorner.vertex.Z);
+                GL.Vertex3(selectedCorner.prev.vertex.X, selectedCorner.prev.vertex.Y, selectedCorner.prev.vertex.Z);
+            }
+            GL.End();
+
+
             GL.Begin(BeginMode.Triangles);
             {
                 if (hasNormals && Config.convertSettingToBool("model", "lighting"))
@@ -120,12 +141,58 @@ namespace GraphicsFinalProject
 
         public void flipWindingOrder()
         {
-            //Iterate throuh Corners and flip the winding order.
+            //Iterate through Corners and flip the winding order.
+            
+            for (int index = 0; index < triangles.Count; index += 3)
+            {
+                Corner temp = triangles[index + 0];
+                triangles[index + 0] = triangles[index + 2];
+                triangles[ index + 2] = temp;
+            }
         }
-
+        
         private void buildCornerInformation()
         {
             //Build Corner Table info like next, previous, opposite, left and right.
+
+            //Build Corner Table next and previous
+            for (int index = 0; index < triangles.Count; index += 3)
+            {
+
+                triangles[index + 0].next = triangles[index + 1];
+                triangles[index + 0].prev = triangles[index + 2];
+
+                triangles[index + 1].next = triangles[index + 2];
+                triangles[index + 1].prev = triangles[index + 0];
+
+                triangles[index + 2].next = triangles[index + 0];
+                triangles[index + 2].prev = triangles[index + 1];
+            }
+
+            //Build Corner Table Opposite
+            for (int index = 0; index < triangles.Count; index += 1)
+            {
+                
+                for (int indexToo = 0; indexToo < triangles.Count; indexToo += 1)
+                {
+                    if (triangles[ index].next.vertexIndex == triangles[ indexToo].prev.vertexIndex)
+                    {
+                        if (triangles[ index].prev.vertexIndex == triangles[ indexToo].next.vertexIndex)
+                        {
+                            triangles[ index].opposite = triangles[ indexToo];
+                        }
+                    }
+                }
+            }
+
+
+            //Build Corner Table Opposite
+            for (int index = 0; index < triangles.Count; index += 1)
+            {
+                        triangles[index].right = triangles[index].prev.opposite;
+                        triangles[index].left = triangles[index].next.opposite ;
+            }
+
         }
     }
 }
