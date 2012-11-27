@@ -31,6 +31,12 @@ namespace GraphicsFinalProject
             else
             {
                 PolygonFileParser.parsePLYFile(fileName, this);
+
+                if (normals.Count > 0)
+                {
+                    hasNormals = true;
+                }
+
                 buildCornerInformation();
             }
         }
@@ -41,33 +47,40 @@ namespace GraphicsFinalProject
             {
                 if (hasNormals && Config.convertSettingToBool("model", "lighting"))
                 {
+                    GL.Enable(EnableCap.Lighting);
+                    GL.Enable(EnableCap.Light0);
+                    GL.Light(LightName.Light0, LightParameter.Position, new OpenTK.Vector4(Config.convertSettingToFloat("lights", "one_x"), Config.convertSettingToFloat("lights", "one_y"), Config.convertSettingToFloat("lights", "one_z"), Config.convertSettingToFloat("lights", "one_w")));
+                    GL.Light(LightName.Light0, LightParameter.Ambient, new OpenTK.Vector4(Config.convertSettingToFloat("colours", "light_one_ambient_red"), Config.convertSettingToFloat("colours", "light_one_ambient_green"), Config.convertSettingToFloat("colours", "light_one_ambient_blue"), Config.convertSettingToFloat("colours", "light_one_ambient_alpha")));
+                    GL.Light(LightName.Light0, LightParameter.Diffuse, new OpenTK.Vector4(Config.convertSettingToFloat("colours", "light_one_diffuse_red"), Config.convertSettingToFloat("colours", "light_one_diffuse_green"), Config.convertSettingToFloat("colours", "light_one_diffuse_blue"), Config.convertSettingToFloat("colours", "light_one_diffuse_alpha")));
+                    GL.Light(LightName.Light0, LightParameter.Specular, new OpenTK.Vector4(Config.convertSettingToFloat("colours", "light_one_specular_red"), Config.convertSettingToFloat("colours", "light_one_specular_green"), Config.convertSettingToFloat("colours", "light_one_specular_blue"), Config.convertSettingToFloat("colours", "light_one_specular_alpha"))); 
+
                     for (int index = 0; index < triangles.Count; index += 3)
                     {
                         if (triangles[index].textured)
                         {
-                            GL.Normal3(normals[index + 0].X, normals[index + 0].Y, normals[index + 0].Z);
+                            GL.Normal3(normals[triangles[index + 0].vertexIndex].X, normals[triangles[index + 0].vertexIndex].Y, normals[triangles[index + 0].vertexIndex].Z);
                             GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
                             GL.Vertex3(triangles[index + 0].vertex.X, triangles[index + 0].vertex.Y, triangles[index + 0].vertex.Z);
 
-                            GL.Normal3(normals[index + 1].X, normals[index + 1].Y, normals[index + 1].Z);
+                            GL.Normal3(normals[triangles[index + 1].vertexIndex].X, normals[triangles[index + 1].vertexIndex].Y, normals[triangles[index + 1].vertexIndex].Z);
                             GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
                             GL.Vertex3(triangles[index + 1].vertex.X, triangles[index + 1].vertex.Y, triangles[index + 1].vertex.Z);
 
-                            GL.Normal3(normals[index + 2].X, normals[index + 2].Y, normals[index + 2].Z);
+                            GL.Normal3(normals[triangles[index + 2].vertexIndex].X, normals[triangles[index + 2].vertexIndex].Y, normals[triangles[index + 2].vertexIndex].Z);
                             GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
                             GL.Vertex3(triangles[index + 2].vertex.X, triangles[index + 2].vertex.Y, triangles[index + 2].vertex.Z);
                         }
                         else
                         {
-                            GL.Normal3(normals[index + 0].X, normals[index + 0].Y, normals[index + 0].Z);
+                            GL.Normal3(normals[triangles[index + 0].vertexIndex].X, normals[triangles[index + 0].vertexIndex].Y, normals[triangles[index + 0].vertexIndex].Z);
                             GL.Color4(triangles[index + 0].colour.red, triangles[index + 0].colour.green, triangles[index + 0].colour.blue, triangles[index + 0].colour.alpha);
                             GL.Vertex3(triangles[index + 0].vertex.X, triangles[index + 0].vertex.Y, triangles[index + 0].vertex.Z);
 
-                            GL.Normal3(normals[index + 1].X, normals[index + 1].Y, normals[index + 1].Z);
+                            GL.Normal3(normals[triangles[index + 1].vertexIndex].X, normals[triangles[index + 1].vertexIndex].Y, normals[triangles[index + 1].vertexIndex].Z);
                             GL.Color4(triangles[index + 1].colour.red, triangles[index + 1].colour.green, triangles[index + 1].colour.blue, triangles[index + 1].colour.alpha);
                             GL.Vertex3(triangles[index + 1].vertex.X, triangles[index + 1].vertex.Y, triangles[index + 1].vertex.Z);
 
-                            GL.Normal3(normals[index + 2].X, normals[index + 2].Y, normals[index + 2].Z);
+                            GL.Normal3(normals[triangles[index + 2].vertexIndex].X, normals[triangles[index + 2].vertexIndex].Y, normals[triangles[index + 2].vertexIndex].Z);
                             GL.Color4(triangles[index + 2].colour.red, triangles[index + 2].colour.green, triangles[index + 2].colour.blue, triangles[index + 2].colour.alpha);
                             GL.Vertex3(triangles[index + 2].vertex.X, triangles[index + 2].vertex.Y, triangles[index + 2].vertex.Z);
                         }

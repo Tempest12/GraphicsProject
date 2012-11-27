@@ -154,7 +154,7 @@ namespace GraphicsFinalProject
                         Corner tempCornerThree = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
                         triangleIndex++;
 
-                        Corner tempCornerFour = new Corner(int.Parse(pieces[2]), container.vertices[int.Parse(pieces[2])], colourList[int.Parse(pieces[2])], triangleIndex);
+                        Corner tempCornerFour = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
                         Corner tempCornerFive = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
                         Corner tempCornerSix = new Corner(int.Parse(pieces[4]), container.vertices[int.Parse(pieces[4])], colourList[int.Parse(pieces[4])], triangleIndex);
                         triangleIndex++;
