@@ -6,6 +6,24 @@ using System.Text;
 //3rd Party Libs
 using OpenTK.Graphics.OpenGL;
 
+
+
+
+
+using System.Diagnostics;
+using System.IO;
+
+using System.Drawing;
+
+using System.Drawing.Imaging;
+/*
+using OpenTK;
+using OpenTK.Graphics;
+
+*/
+
+
+
 namespace GraphicsFinalProject
 {
     public class CornerTableMesh
@@ -17,6 +35,17 @@ namespace GraphicsFinalProject
         public List<Corner> triangles;
 
         public bool hasNormals = false;
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        Bitmap bitmap = new Bitmap("bitOfVine.bmp");
+        int texture;
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////
 
         public CornerTableMesh(String fileName)
         {
@@ -35,7 +64,50 @@ namespace GraphicsFinalProject
             }
 
             selectedCorner = triangles[0];
+
+
+
+
+            /// <summary>
+            /// /////////////////////////////////////////////////////////////////
+            /// </summary>
+            
+            /// <summary>
+            /// Setup OpenGL and load resources here.
+            /// </summary>
+            /// <param name="e">Not used.</param>
+
+            GL.ClearColor(Color.MidnightBlue);
+            GL.Enable(EnableCap.Texture2D);
+            
+            GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
+
+            GL.GenTextures(1, out texture);
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+
+            BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
+                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+
+            bitmap.UnlockBits(data);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            
+            
+
+            /// <summary>
+            /// /////////////////////////////////////////////////////////////////
+            /// </summary>
+
+            
+
+
+
         }
+
 
 
         public void draw()
@@ -55,6 +127,23 @@ namespace GraphicsFinalProject
             }
             GL.End();
 
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            /*
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            */
+
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+            
+            
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             GL.Begin(BeginMode.Triangles);
             {
@@ -105,14 +194,60 @@ namespace GraphicsFinalProject
                     {
                         if (triangles[index].textured)
                         {
-                            GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 0].vertex.x, triangles[index + 0].vertex.y, triangles[index + 0].vertex.z);
+                            
 
-                            GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 1].vertex.x, triangles[index + 1].vertex.y, triangles[index + 1].vertex.z);
 
-                            GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 2].vertex.x, triangles[index + 2].vertex.y, triangles[index + 2].vertex.z);
+                            /*
+                            
+                            protected override void OnRenderFrame(FrameEventArgs e)
+                            {
+                                GL.Clear(ClearBufferMask.ColorBufferBit);
+
+                                GL.MatrixMode(MatrixMode.Modelview);
+                                GL.LoadIdentity();
+                                GL.BindTexture(TextureTarget.Texture2D, texture);
+
+                                GL.Begin(BeginMode.Quads);
+
+                                GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(-0.6f, -0.4f);
+                                GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(0.6f, -0.4f);
+                                GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(0.6f, 0.4f);
+                                GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(-0.6f, 0.4f);
+
+                                GL.End();
+
+                                SwapBuffers();
+                            }
+                            */
+
+                            Corner temp = null;
+
+                            if(triangles[index + 2].textureCenter)
+                            {
+                                temp = triangles[index + 2];
+                            }
+                            else if (triangles[index + 1].textureCenter)
+                            {
+                                temp = triangles[index + 1];
+                            }
+                            else
+                            {
+                                temp = triangles[index + 0];
+                            }
+
+
+                            GL.TexCoord2(0.0f, 0.0f);
+                            //GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
+                            GL.Vertex3(temp.vertex.x, temp.vertex.y, temp.vertex.z);
+
+                            GL.TexCoord2(0.0f, 1.0f);
+                            //GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
+                            GL.Vertex3(temp.next.vertex.x, temp.next.vertex.y, temp.next.vertex.z);
+
+                            GL.TexCoord2(1.0f, 0.0f);
+                            //GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
+                            GL.Vertex3(temp.prev.vertex.x, temp.prev.vertex.y, temp.prev.vertex.z);
+
                         }
                         else
                         {
@@ -167,9 +302,9 @@ namespace GraphicsFinalProject
                 
                 for (int indexToo = 0; indexToo < triangles.Count; indexToo += 1)
                 {
-                    if (triangles[ index].next.vertex == triangles[ indexToo].prev.vertex)
+                    if (triangles[index].next.vertex == triangles[indexToo].prev.vertex)
                     {
-                        if (triangles[ index].prev.vertex == triangles[ indexToo].next.vertex)
+                        if (triangles[index].prev.vertex == triangles[indexToo].next.vertex)
                         {
                             triangles[ index].opposite = triangles[ indexToo];
                             break;
@@ -182,7 +317,8 @@ namespace GraphicsFinalProject
             //Build Corner Table Opposite
             for (int index = 0; index < triangles.Count; index += 1)
             {
-                        triangles[index].right = triangles[index].prev.opposite;
+                        
+                triangles[index].right = triangles[index].prev.opposite;
                         triangles[index].left = triangles[index].next.opposite;
             }
 
@@ -207,13 +343,23 @@ namespace GraphicsFinalProject
                     seed.visited = true;
                     seed.next.visited = true;
                     seed.prev.visited = true;
+                    
                     seed.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
                     seed.next.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
                     seed.prev.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
+                    
+                    seed.textured = true;
+                    seed.next.textured = true;
+                    seed.prev.textured = true;
+
+                    seed.next.textureCenter = true;
+
                 }
                 else if (!seed.visited)
                 {
                     seed = seed.opposite; // go back one triangle
+                    seed.textureCenter = true;
+                    seed.prev.textureCenter = false;
                 }
 
                 seed = seed.right; // advance to next ring edge on the right

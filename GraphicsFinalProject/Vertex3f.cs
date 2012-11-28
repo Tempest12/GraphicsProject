@@ -64,6 +64,7 @@ namespace GraphicsFinalProject
 
         public static bool operator ==(Vertex3f one, Vertex3f two)
         {
+
             return (one.x == two.x && one.y == two.y && one.z == two.z);
         }
 
