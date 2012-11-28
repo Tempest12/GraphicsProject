@@ -1,0 +1,33 @@
+using System;
+using System.Drawing;
+using Tao.OpenGl;
+using Tao.DevIl;
+using System.Windows.Forms;
+
+namespace TextureTest
+{
+    public partial class Form1 : Form
+    {
+        int texture;
+
+        public Form1()
+        {
+            InitializeComponent();
+            OpenGlControl.InitializeContexts();
+
+            Il.ilInit();
+            Ilut.ilutInit();
+
+            texture = Ilut.ilutGLLoadImage("test.bmp");
+
+            Gl.glBegin(Gl.GL_QUADS);
+
+                Gl.glTexCoord2f(0.0f, 0.0f); Gl.glVertex2f(-1.0f, -1.0f);
+                Gl.glTexCoord2f(1.0f, 0.0f); Gl.glVertex2f(1.0f, -1.0f);
+                Gl.glTexCoord2f(1.0f, 1.0f); Gl.glVertex2f(1.0f, 1.0f); 
+                Gl.glTexCoord2f(0.0f, 1.0f); Gl.glVertex2f(-1.0f, 1.0f);
+
+            Gl.glEnd(); 
+        }
+    } 
+}

@@ -40,7 +40,7 @@ namespace GraphicsFinalProject
 
         public void draw()
         {
-            //Draw Selected here
+            //Draw Selected Corner Lines Here
             GL.Begin(BeginMode.Lines);
             {
                 //Draw One Line here
@@ -142,7 +142,7 @@ namespace GraphicsFinalProject
                 triangles[ index + 2] = temp;
             }
         }
-        
+
         private void buildCornerInformation()
         {
             //Build Corner Table info like next, previous, opposite, left and right.
@@ -188,35 +188,38 @@ namespace GraphicsFinalProject
 
         }
 
-
-        /*public void operationGreenThumb()
+        /*
+        public void operationGreenThumb()
         {
             Corner seed = selectedCorner; // start at the seed corner s
             
             // mark vertices as visited
-            seed.visited = true;
-            seed.next.visited = true;
-            seed.prev.visited = true;
+            seed.next.vertex.visited = true;
+            seed.prev.vertex.visited = true;
 
-            //First step
-            seed = seed.right;
-
-            while (seed != selectedCorner)
+            do
             {
-                if (!seed.visited)
+                
+                if (!seed.vertex.visited)
                 {
+                    seed.vertex.visited = true;
                     seed.visited = true;
                     seed.next.visited = true;
                     seed.prev.visited = true;
-                    seed = seed.right;
                 }
-                else if (!c.t.m) c = c.o; // go back one triangle
-                c = c.r; // advance to next ring edge on the right
-            } // until back at the beginning
+                else if (!seed.visited)
+                {
+                    seed = seed.opposite; // go back one triangle
+                }
+                
+                seed = seed.right; // advance to next ring edge on the right
+            
+            } while (seed != selectedCorner); // until back at the beginning
+            */
 
 
 
-
+            /*
             c = s; // start at the seed corner s
             c.n.v.m = c.p.v.m = true; // mark vertices as visited
             do
@@ -225,7 +228,8 @@ namespace GraphicsFinalProject
                 else if (!c.t.m) c = c.o; // go back one triangle
                 c = c.r; // advance to next ring edge on the right
             } while (c != s.o); // until back at the beginning
+            */
 
-        }*/
+        }
     }
 }
