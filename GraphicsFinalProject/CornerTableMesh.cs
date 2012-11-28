@@ -44,14 +44,14 @@ namespace GraphicsFinalProject
             GL.Begin(BeginMode.Lines);
             {
                 //Draw One Line here
-                /*GL.Color4( Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
-                GL.Vertex3(selectedCorner.vertex.X, selectedCorner.vertex.Y, selectedCorner.vertex.Z);
-                GL.Vertex3(selectedCorner.next.vertex.X, selectedCorner.next.vertex.Y, selectedCorner.next.vertex.Z);
+                GL.Color4( Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
+                GL.Vertex3(selectedCorner.vertex.x, selectedCorner.vertex.y, selectedCorner.vertex.z);
+                GL.Vertex3(selectedCorner.next.vertex.x, selectedCorner.next.vertex.y, selectedCorner.next.vertex.z);
 
                 //Draw the other line
                 GL.Color4(Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
-                GL.Vertex3(selectedCorner.vertex.X, selectedCorner.vertex.Y, selectedCorner.vertex.Z);
-                GL.Vertex3(selectedCorner.prev.vertex.X, selectedCorner.prev.vertex.Y, selectedCorner.prev.vertex.Z);*/
+                GL.Vertex3(selectedCorner.vertex.x, selectedCorner.vertex.y, selectedCorner.vertex.z);
+                GL.Vertex3(selectedCorner.prev.vertex.x, selectedCorner.prev.vertex.y, selectedCorner.prev.vertex.z);
             }
             GL.End();
 
@@ -187,8 +187,7 @@ namespace GraphicsFinalProject
             }
 
         }
-
-        /*
+        
         public void operationGreenThumb()
         {
             Corner seed = selectedCorner; // start at the seed corner s
@@ -206,6 +205,9 @@ namespace GraphicsFinalProject
                     seed.visited = true;
                     seed.next.visited = true;
                     seed.prev.visited = true;
+                    seed.colour = new Colour4f( 0.0f, 1.0f, 0.0f, 1.0f);
+                    seed.next.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
+                    seed.prev.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
                 }
                 else if (!seed.visited)
                 {
@@ -213,9 +215,9 @@ namespace GraphicsFinalProject
                 }
                 
                 seed = seed.right; // advance to next ring edge on the right
+
+            } while (seed != selectedCorner.opposite); // until back at the beginning
             
-            } while (seed != selectedCorner); // until back at the beginning
-            */
 
 
 
