@@ -82,10 +82,6 @@ namespace GraphicsFinalProject
 
         public static bool operator ==(Vertex3f one, Vertex3f two)
         {
-<<<<<<< HEAD
-
-            return (one.x == two.x && one.y == two.y && one.z == two.z);
-=======
             if (one.x == two.x)
             {
                 if (one.y == two.y)
@@ -98,7 +94,6 @@ namespace GraphicsFinalProject
             }
 
             return false;
->>>>>>> f92d9baa9d2c137a7bb6e8cd54651d1e5ee3bdf9
         }
 
         public static bool operator !=(Vertex3f one, Vertex3f two)

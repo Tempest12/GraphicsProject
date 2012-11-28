@@ -123,17 +123,7 @@ namespace GraphicsFinalProject
 
                     if (vertexIndex == header.vertexCount)
                     {
-<<<<<<< HEAD
-                        header.vertexIndexConversion = weldVertices(container.vertices);
-=======
-                        header.vertexIndexConversion = new int[header.vertexCount];
-                        for (int index = 0; index < header.vertexCount; index++)
-                        {
-                            header.vertexIndexConversion[index] = index;
-                        }
-
                         header.vertexIndexConversion = weldVertices(ref container.vertices);
->>>>>>> f92d9baa9d2c137a7bb6e8cd54651d1e5ee3bdf9
                     }
                 }
                 else if (faceIndex < header.faceCount)
