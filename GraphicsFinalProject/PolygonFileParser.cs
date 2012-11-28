@@ -123,7 +123,17 @@ namespace GraphicsFinalProject
 
                     if (vertexIndex == header.vertexCount)
                     {
+<<<<<<< HEAD
                         header.vertexIndexConversion = weldVertices(container.vertices);
+=======
+                        header.vertexIndexConversion = new int[header.vertexCount];
+                        for (int index = 0; index < header.vertexCount; index++)
+                        {
+                            header.vertexIndexConversion[index] = index;
+                        }
+
+                        header.vertexIndexConversion = weldVertices(ref container.vertices);
+>>>>>>> f92d9baa9d2c137a7bb6e8cd54651d1e5ee3bdf9
                     }
                 }
                 else if (faceIndex < header.faceCount)
@@ -322,7 +332,7 @@ namespace GraphicsFinalProject
             return lineNumber;
         }
 
-        private static int[] weldVertices(List<Vertex3f> vertices)
+        private static int[] weldVertices(ref List<Vertex3f> vertices)
         {
             int[] converter = new int[vertices.Count];
             List<Vertex3f> weldedList = new List<Vertex3f>();
@@ -331,7 +341,9 @@ namespace GraphicsFinalProject
             {
                 if (weldedList.Contains(vertices[index]))
                 {
+                    Log.writeDebug("Two Vertices that are equal have the following coords: \n" + vertices[index] + "\n" + vertices[findFirstIndex(weldedList, vertices[index])]);
                     converter[index] = findFirstIndex(weldedList, vertices[index]);
+                    
                 }
                 else
                 {
@@ -341,18 +353,28 @@ namespace GraphicsFinalProject
             }
 
             vertices = weldedList;
+            Console.WriteLine(weldedList.Count);
+
+            for (int index = 0; index < vertices.Count; index++)
+            {
+                Log.writeDebug(vertices[index].ToString() + "\t");
+                Log.writeDebug(weldedList[converter[index]] + "\n");
+            }
 
             return converter;
         }
 
         private static int findFirstIndex(List<Vertex3f> list, Vertex3f vertex)
         {
-            for (int index = 0; index < list.Count; index++)
+            for (int index = 0; index < list.Count;)
             {
                 if (list[index] == vertex)
                 {
+                    //Log.writeDebug("Two Vertices that are equal have the following coords: \n" + list[index] + "\n" + vertex);
                     return index;
                 }
+
+                index++;
             }
 
             return -1;

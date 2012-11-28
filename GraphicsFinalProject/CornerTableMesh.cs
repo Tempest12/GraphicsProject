@@ -332,8 +332,6 @@ namespace GraphicsFinalProject
             seed.next.vertex.visited = true;
             seed.prev.vertex.visited = true;
 
-            int cap = 50;
-
             do
             {
 
@@ -364,7 +362,7 @@ namespace GraphicsFinalProject
 
                 seed = seed.right; // advance to next ring edge on the right
 
-            } while (--cap > 0); //while (seed != selectedCorner.opposite); // until back at the beginning
+            } while (seed != selectedCorner.opposite); // until back at the beginning
             
 
             // Jarek's Code:

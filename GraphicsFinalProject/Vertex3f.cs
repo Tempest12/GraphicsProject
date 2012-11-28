@@ -45,6 +45,11 @@ namespace GraphicsFinalProject
             }
         }
 
+        public override string ToString()
+        {
+            return "X: " + this.x + " Y: " + this.y + " Z: " + this.z;
+        }
+
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -54,7 +59,20 @@ namespace GraphicsFinalProject
         {
             if (obj is Vertex3f)
             {
-                return this == (Vertex3f)obj;
+                Vertex3f that = (Vertex3f)obj;
+
+                if (this.x == that.x)
+                {
+                    if (this.y == that.y)
+                    {
+                        if (this.z == that.z)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
             }
             else
             {
@@ -64,8 +82,23 @@ namespace GraphicsFinalProject
 
         public static bool operator ==(Vertex3f one, Vertex3f two)
         {
+<<<<<<< HEAD
 
             return (one.x == two.x && one.y == two.y && one.z == two.z);
+=======
+            if (one.x == two.x)
+            {
+                if (one.y == two.y)
+                {
+                    if (one.z == two.z)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+>>>>>>> f92d9baa9d2c137a7bb6e8cd54651d1e5ee3bdf9
         }
 
         public static bool operator !=(Vertex3f one, Vertex3f two)
