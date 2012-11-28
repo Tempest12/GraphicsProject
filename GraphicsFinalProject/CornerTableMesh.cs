@@ -196,16 +196,18 @@ namespace GraphicsFinalProject
             seed.next.vertex.visited = true;
             seed.prev.vertex.visited = true;
 
+            int cap = 50;
+
             do
             {
-                
+
                 if (!seed.vertex.visited)
                 {
                     seed.vertex.visited = true;
                     seed.visited = true;
                     seed.next.visited = true;
                     seed.prev.visited = true;
-                    seed.colour = new Colour4f( 0.0f, 1.0f, 0.0f, 1.0f);
+                    seed.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
                     seed.next.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
                     seed.prev.colour = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
                 }
@@ -213,10 +215,10 @@ namespace GraphicsFinalProject
                 {
                     seed = seed.opposite; // go back one triangle
                 }
-                
+
                 seed = seed.right; // advance to next ring edge on the right
 
-            } while (seed != selectedCorner.opposite); // until back at the beginning
+            } while (--cap > 0); //while (seed != selectedCorner.opposite); // until back at the beginning
             
 
 

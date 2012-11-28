@@ -123,7 +123,13 @@ namespace GraphicsFinalProject
 
                     if (vertexIndex == header.vertexCount)
                     {
-                        header.vertexIndexConversion = weldVertices(container.vertices);
+                        header.vertexIndexConversion = new int[header.vertexCount];
+                        for (int index = 0; index < header.vertexCount; index++)
+                        {
+                            header.vertexIndexConversion[index] = index;
+                        }
+
+                        //header.vertexIndexConversion = weldVertices(container.vertices);
                     }
                 }
                 else if (faceIndex < header.faceCount)
@@ -135,7 +141,7 @@ namespace GraphicsFinalProject
 
                     String[] pieces = temp.Split(' ');
 
-                    if (pieces.Length <= 4)
+                    if (pieces.Length < 4)
                     {
                         MainMethod.reportError("Not enough information on line: " + lineNumber + " to make a face.");
                         continue;

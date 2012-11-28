@@ -53,6 +53,7 @@ namespace GraphicsFinalProject
             this.Mouse.ButtonDown += handleMouseButtonDown;
             this.Mouse.ButtonUp += handleMouseButtonUp;
             this.Mouse.Move += handleMouseMove;
+            this.Mouse.WheelChanged += handleMouseWheel;
 
             this.models = new List<CornerTableMesh>();
         }
@@ -89,6 +90,12 @@ namespace GraphicsFinalProject
 
             oldMouseX = Mouse.X;
             oldMouseY = Mouse.Y;
+        }
+
+        public void handleMouseWheel(object sender, MouseWheelEventArgs mwea)
+        {
+            //Console.WriteLine(Mouse.WheelDelta);
+            camera.position.Z += mwea.Delta;
         }
 
         public void handleKeyboardDown(object sender, KeyboardKeyEventArgs kkea)
