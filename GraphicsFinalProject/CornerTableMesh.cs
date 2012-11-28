@@ -10,8 +10,7 @@ namespace GraphicsFinalProject
 {
     public class CornerTableMesh
     {
-        public List<OpenTK.Vector3> vertices;
-        public List<OpenTK.Vector3> normals;
+        public List<Vertex3f> vertices;
 
         public Corner selectedCorner;
 
@@ -21,8 +20,7 @@ namespace GraphicsFinalProject
 
         public CornerTableMesh(String fileName)
         {
-            this.vertices = new List<OpenTK.Vector3>();
-            this.normals = new List<OpenTK.Vector3>();
+            this.vertices = new List<Vertex3f>();
 
             this.triangles = new List<Corner>();
 
@@ -33,12 +31,6 @@ namespace GraphicsFinalProject
             else
             {
                 PolygonFileParser.parsePLYFile(fileName, this);
-
-                if (normals.Count > 0)
-                {
-                    hasNormals = true;
-                }
-
                 buildCornerInformation();
             }
 
@@ -52,14 +44,14 @@ namespace GraphicsFinalProject
             GL.Begin(BeginMode.Lines);
             {
                 //Draw One Line here
-                GL.Color4( Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
+                /*GL.Color4( Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
                 GL.Vertex3(selectedCorner.vertex.X, selectedCorner.vertex.Y, selectedCorner.vertex.Z);
                 GL.Vertex3(selectedCorner.next.vertex.X, selectedCorner.next.vertex.Y, selectedCorner.next.vertex.Z);
 
                 //Draw the other line
                 GL.Color4(Config.convertSettingToFloat("colours", "cornerSelectedColour_red"), Config.convertSettingToFloat("colours", "cornerSelectedColour_green"), Config.convertSettingToFloat("colours", "cornerSelectedColour_blue"), Config.convertSettingToFloat("colours", "cornerSelectedColour_alpha"));
                 GL.Vertex3(selectedCorner.vertex.X, selectedCorner.vertex.Y, selectedCorner.vertex.Z);
-                GL.Vertex3(selectedCorner.prev.vertex.X, selectedCorner.prev.vertex.Y, selectedCorner.prev.vertex.Z);
+                GL.Vertex3(selectedCorner.prev.vertex.X, selectedCorner.prev.vertex.Y, selectedCorner.prev.vertex.Z);*/
             }
             GL.End();
 
@@ -79,31 +71,31 @@ namespace GraphicsFinalProject
                     {
                         if (triangles[index].textured)
                         {
-                            GL.Normal3(normals[triangles[index + 0].vertexIndex].X, normals[triangles[index + 0].vertexIndex].Y, normals[triangles[index + 0].vertexIndex].Z);
+                            GL.Normal3(triangles[index + 0].vertex.normal.X, triangles[index + 0].vertex.normal.Y, triangles[index + 0].vertex.normal.Z);
                             GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 0].vertex.X, triangles[index + 0].vertex.Y, triangles[index + 0].vertex.Z);
+                            GL.Vertex3(triangles[index + 0].vertex.x, triangles[index + 0].vertex.y, triangles[index + 0].vertex.z);
 
-                            GL.Normal3(normals[triangles[index + 1].vertexIndex].X, normals[triangles[index + 1].vertexIndex].Y, normals[triangles[index + 1].vertexIndex].Z);
+                            GL.Normal3(triangles[index + 1].vertex.normal.X, triangles[index + 1].vertex.normal.Y, triangles[index + 1].vertex.normal.Z);
                             GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 1].vertex.X, triangles[index + 1].vertex.Y, triangles[index + 1].vertex.Z);
+                            GL.Vertex3(triangles[index + 1].vertex.x, triangles[index + 1].vertex.y, triangles[index + 1].vertex.z);
 
-                            GL.Normal3(normals[triangles[index + 2].vertexIndex].X, normals[triangles[index + 2].vertexIndex].Y, normals[triangles[index + 2].vertexIndex].Z);
+                            GL.Normal3(triangles[index + 2].vertex.normal.X, triangles[index + 2].vertex.normal.Y, triangles[index + 2].vertex.normal.Z);
                             GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 2].vertex.X, triangles[index + 2].vertex.Y, triangles[index + 2].vertex.Z);
+                            GL.Vertex3(triangles[index + 2].vertex.x, triangles[index + 2].vertex.y, triangles[index + 2].vertex.z);
                         }
                         else
                         {
-                            GL.Normal3(normals[triangles[index + 0].vertexIndex].X, normals[triangles[index + 0].vertexIndex].Y, normals[triangles[index + 0].vertexIndex].Z);
+                            GL.Normal3(triangles[index + 0].vertex.normal.X, triangles[index + 0].vertex.normal.Y, triangles[index + 0].vertex.normal.Z);
                             GL.Color4(triangles[index + 0].colour.red, triangles[index + 0].colour.green, triangles[index + 0].colour.blue, triangles[index + 0].colour.alpha);
-                            GL.Vertex3(triangles[index + 0].vertex.X, triangles[index + 0].vertex.Y, triangles[index + 0].vertex.Z);
+                            GL.Vertex3(triangles[index + 0].vertex.x, triangles[index + 0].vertex.y, triangles[index + 0].vertex.z);
 
-                            GL.Normal3(normals[triangles[index + 1].vertexIndex].X, normals[triangles[index + 1].vertexIndex].Y, normals[triangles[index + 1].vertexIndex].Z);
+                            GL.Normal3(triangles[index + 1].vertex.normal.X, triangles[index + 1].vertex.normal.Y, triangles[index + 1].vertex.normal.Z);
                             GL.Color4(triangles[index + 1].colour.red, triangles[index + 1].colour.green, triangles[index + 1].colour.blue, triangles[index + 1].colour.alpha);
-                            GL.Vertex3(triangles[index + 1].vertex.X, triangles[index + 1].vertex.Y, triangles[index + 1].vertex.Z);
+                            GL.Vertex3(triangles[index + 1].vertex.x, triangles[index + 1].vertex.y, triangles[index + 1].vertex.z);
 
-                            GL.Normal3(normals[triangles[index + 2].vertexIndex].X, normals[triangles[index + 2].vertexIndex].Y, normals[triangles[index + 2].vertexIndex].Z);
+                            GL.Normal3(triangles[index + 2].vertex.normal.X, triangles[index + 2].vertex.normal.Y, triangles[index + 2].vertex.normal.Z);
                             GL.Color4(triangles[index + 2].colour.red, triangles[index + 2].colour.green, triangles[index + 2].colour.blue, triangles[index + 2].colour.alpha);
-                            GL.Vertex3(triangles[index + 2].vertex.X, triangles[index + 2].vertex.Y, triangles[index + 2].vertex.Z);
+                            GL.Vertex3(triangles[index + 2].vertex.x, triangles[index + 2].vertex.y, triangles[index + 2].vertex.z);
                         }
                     }
                 }
@@ -114,24 +106,24 @@ namespace GraphicsFinalProject
                         if (triangles[index].textured)
                         {
                             GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 0].vertex.X, triangles[index + 0].vertex.Y, triangles[index + 0].vertex.Z);
+                            GL.Vertex3(triangles[index + 0].vertex.x, triangles[index + 0].vertex.y, triangles[index + 0].vertex.z);
 
                             GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 1].vertex.X, triangles[index + 1].vertex.Y, triangles[index + 1].vertex.Z);
+                            GL.Vertex3(triangles[index + 1].vertex.x, triangles[index + 1].vertex.y, triangles[index + 1].vertex.z);
 
                             GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
-                            GL.Vertex3(triangles[index + 2].vertex.X, triangles[index + 2].vertex.Y, triangles[index + 2].vertex.Z);
+                            GL.Vertex3(triangles[index + 2].vertex.x, triangles[index + 2].vertex.y, triangles[index + 2].vertex.z);
                         }
                         else
                         {
                             GL.Color4(triangles[index + 0].colour.red, triangles[index + 0].colour.green, triangles[index + 0].colour.blue, triangles[index + 0].colour.alpha);
-                            GL.Vertex3(triangles[index + 0].vertex.X, triangles[index + 0].vertex.Y, triangles[index + 0].vertex.Z);
+                            GL.Vertex3(triangles[index + 0].vertex.x, triangles[index + 0].vertex.y, triangles[index + 0].vertex.z);
 
                             GL.Color4(triangles[index + 1].colour.red, triangles[index + 1].colour.green, triangles[index + 1].colour.blue, triangles[index + 1].colour.alpha);
-                            GL.Vertex3(triangles[index + 1].vertex.X, triangles[index + 1].vertex.Y, triangles[index + 1].vertex.Z);
+                            GL.Vertex3(triangles[index + 1].vertex.x, triangles[index + 1].vertex.y, triangles[index + 1].vertex.z);
 
                             GL.Color4(triangles[index + 2].colour.red, triangles[index + 2].colour.green, triangles[index + 2].colour.blue, triangles[index + 2].colour.alpha);
-                            GL.Vertex3(triangles[index + 2].vertex.X, triangles[index + 2].vertex.Y, triangles[index + 2].vertex.Z);
+                            GL.Vertex3(triangles[index + 2].vertex.x, triangles[index + 2].vertex.y, triangles[index + 2].vertex.z);
                         }
                     }
                 }

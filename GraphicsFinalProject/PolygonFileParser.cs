@@ -111,13 +111,20 @@ namespace GraphicsFinalProject
                         tempColour.alpha = float.Parse(pieces[header.alphaIndex]);
                     }
 
-                    if(header.normalXIndex != -1 && header.normalYIndex != -1 && header.normalZIndex != -1)
+                    if (header.normalXIndex != -1 && header.normalYIndex != -1 && header.normalZIndex != -1)
                     {
-                        container.normals.Add(new OpenTK.Vector3(tempNormal));
+                        container.vertices.Add(new Vertex3f(tempPosition, tempNormal));
                     }
-
-                    container.vertices.Add(new OpenTK.Vector3(tempPosition));
+                    else
+                    {
+                        container.vertices.Add(new Vertex3f(tempPosition));
+                    }
                     colourList.Add(new Colour4f(tempColour));
+
+                    if (vertexIndex == header.vertexCount)
+                    {
+                        header.vertexIndexConversion = weldVertices(container.vertices);
+                    }
                 }
                 else if (faceIndex < header.faceCount)
                 {
@@ -138,9 +145,9 @@ namespace GraphicsFinalProject
 
                     if (pieces[0] == "3")
                     {
-                        Corner tempCornerOne = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
-                        Corner tempCornerTwo = new Corner(int.Parse(pieces[2]), container.vertices[int.Parse(pieces[2])], colourList[int.Parse(pieces[2])], triangleIndex);
-                        Corner tempCornerThree = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
+                        Corner tempCornerOne = new Corner(header.vertexIndexConversion[int.Parse(pieces[1])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[1])]], colourList[int.Parse(pieces[1])], triangleIndex);
+                        Corner tempCornerTwo = new Corner(header.vertexIndexConversion[int.Parse(pieces[2])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[2])]], colourList[int.Parse(pieces[2])], triangleIndex);
+                        Corner tempCornerThree = new Corner(header.vertexIndexConversion[int.Parse(pieces[3])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[3])]], colourList[int.Parse(pieces[3])], triangleIndex);
 
                         container.triangles.Add(tempCornerOne);
                         container.triangles.Add(tempCornerTwo);
@@ -149,14 +156,17 @@ namespace GraphicsFinalProject
                     }
                     else if (pieces[0] == "4")
                     {
-                        Corner tempCornerOne = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
-                        Corner tempCornerTwo = new Corner(int.Parse(pieces[2]), container.vertices[int.Parse(pieces[2])], colourList[int.Parse(pieces[2])], triangleIndex);
-                        Corner tempCornerThree = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
+                        Corner tempCornerOne = new Corner(header.vertexIndexConversion[int.Parse(pieces[1])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[1])]], colourList[int.Parse(pieces[1])], triangleIndex);
+                        Corner tempCornerTwo = new Corner(header.vertexIndexConversion[int.Parse(pieces[2])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[2])]], colourList[int.Parse(pieces[2])], triangleIndex);
+                        Corner tempCornerThree = new Corner(header.vertexIndexConversion[int.Parse(pieces[3])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[3])]], colourList[int.Parse(pieces[3])], triangleIndex);
                         triangleIndex++;
 
-                        Corner tempCornerFour = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
-                        Corner tempCornerFive = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
-                        Corner tempCornerSix = new Corner(int.Parse(pieces[4]), container.vertices[int.Parse(pieces[4])], colourList[int.Parse(pieces[4])], triangleIndex);
+                        Corner tempCornerFour = new Corner(header.vertexIndexConversion[int.Parse(pieces[1])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[1])]], colourList[int.Parse(pieces[1])], triangleIndex);
+                        Corner tempCornerFive = new Corner(header.vertexIndexConversion[int.Parse(pieces[3])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[3])]], colourList[int.Parse(pieces[3])], triangleIndex);
+                        Corner tempCornerSix = new Corner(header.vertexIndexConversion[int.Parse(pieces[4])], container.vertices[header.vertexIndexConversion[int.Parse(pieces[4])]], colourList[int.Parse(pieces[4])], triangleIndex);
+                        //Corner tempCornerFour = new Corner(int.Parse(pieces[1]), container.vertices[int.Parse(pieces[1])], colourList[int.Parse(pieces[1])], triangleIndex);
+                        //Corner tempCornerFive = new Corner(int.Parse(pieces[3]), container.vertices[int.Parse(pieces[3])], colourList[int.Parse(pieces[3])], triangleIndex);
+                        //Corner tempCornerSix = new Corner(int.Parse(pieces[4]), container.vertices[int.Parse(pieces[4])], colourList[int.Parse(pieces[4])], triangleIndex);
                         triangleIndex++;
 
                         container.triangles.Add(tempCornerOne);
@@ -310,6 +320,42 @@ namespace GraphicsFinalProject
             }
 
             return lineNumber;
+        }
+
+        private static int[] weldVertices(List<Vertex3f> vertices)
+        {
+            int[] converter = new int[vertices.Count];
+            List<Vertex3f> weldedList = new List<Vertex3f>();
+
+            for (int index = 0; index < vertices.Count; index++)
+            {
+                if (weldedList.Contains(vertices[index]))
+                {
+                    converter[index] = findFirstIndex(weldedList, vertices[index]);
+                }
+                else
+                {
+                    converter[index] = weldedList.Count;
+                    weldedList.Add(new Vertex3f(vertices[index]));
+                }
+            }
+
+            vertices = weldedList;
+
+            return converter;
+        }
+
+        private static int findFirstIndex(List<Vertex3f> list, Vertex3f vertex)
+        {
+            for (int index = 0; index < list.Count; index++)
+            {
+                if (list[index] == vertex)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
         }
     }
 }

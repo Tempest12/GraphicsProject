@@ -15,7 +15,7 @@ namespace GraphicsFinalProject
         public bool textured;
         public OpenTK.Vector2 textureCoordinates;
 
-        public OpenTK.Vector3 vertex;
+        public Vertex3f vertex;
 
         //Corner Table Implementation details. Nasty stuff
         public Corner next;
@@ -27,7 +27,7 @@ namespace GraphicsFinalProject
 
         public int triangleNumber;
 
-        public Corner(int vertexIndex, OpenTK.Vector3 vertex, Colour4f colour, int triangleNumber)
+        public Corner(int vertexIndex, Vertex3f vertex, Colour4f colour, int triangleNumber)
         {
             this.vertexIndex = vertexIndex;
             this.triangleNumber = triangleNumber;

@@ -38,7 +38,7 @@ namespace GraphicsFinalProject
             GL.ClearColor(Config.convertSettingToFloat("colours", "bg_red"), Config.convertSettingToFloat("colours", "bg_green"), Config.convertSettingToFloat("colours", "bg_red"), Config.convertSettingToFloat("colours", "bg_alpha"));
 
             GL.LightModel(LightModelParameter.LightModelAmbient, Config.convertSettingToFloat("lights", "ambient_light_level"));
-            GL.ShadeModel(ShadingModel.Smooth);
+            //GL.ShadeModel(ShadingModel.Smooth);
             GL.Enable(EnableCap.ColorMaterial);
             //GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();

@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="RenderWindow.cs" />
     <Compile Include="Trikey.cs" />
+    <Compile Include="Vertex3f.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

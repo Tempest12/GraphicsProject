@@ -28,6 +28,8 @@ namespace GraphicsFinalProject
         public int blueIndex;
         public int alphaIndex;
 
+        public int[] vertexIndexConversion;
+
         public PLYFileHeader()
         {
             this.xIndex = -1;
