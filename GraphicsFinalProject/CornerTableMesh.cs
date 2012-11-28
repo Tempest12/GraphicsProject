@@ -221,7 +221,7 @@ namespace GraphicsFinalProject
             } while (--cap > 0); //while (seed != selectedCorner.opposite); // until back at the beginning
             
 
-
+            // Jarek's Code:
 
             /*
             c = s; // start at the seed corner s
@@ -233,6 +233,9 @@ namespace GraphicsFinalProject
                 c = c.r; // advance to next ring edge on the right
             } while (c != s.o); // until back at the beginning
             */
+
+
+
 
         }
     }
