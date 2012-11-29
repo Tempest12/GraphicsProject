@@ -14,6 +14,7 @@ namespace GraphicsFinalProject
         public Colour4f colour;
         public bool textured;
         public bool textureCenter;
+        public bool branched;
         public OpenTK.Vector2 textureCoordinates;
 
         public Vertex3f vertex;
@@ -37,6 +38,7 @@ namespace GraphicsFinalProject
             this.colour = new Colour4f(colour);
             this.textured = false;
             this.textureCenter = false;
+            this.branched = false;
             this.textureCoordinates = new OpenTK.Vector2(0.0f, 0.0f);
 
             this.vertex = vertex;

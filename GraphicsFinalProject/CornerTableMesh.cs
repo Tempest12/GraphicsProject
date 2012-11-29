@@ -42,7 +42,9 @@ namespace GraphicsFinalProject
         //////////////////////////////////////////////////////////////////////////////////////////
 
         Bitmap bitmap = new Bitmap("bitOfVine.bmp");
+        //Bitmap bitmap2 = new Bitmap("bitOfVine2.bmp");
         int texture;
+        //int texture2;
 
         //////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +79,8 @@ namespace GraphicsFinalProject
             /// </summary>
             /// <param name="e">Not used.</param>
 
+            
+            // texture/bitmap
             GL.ClearColor(Color.MidnightBlue);
             GL.Enable(EnableCap.Texture2D);
             
@@ -96,7 +100,25 @@ namespace GraphicsFinalProject
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
             
-            
+
+
+            /*
+            // textrue2/bitmap2
+
+            GL.GenTextures(1, out texture2);
+            GL.BindTexture(TextureTarget.Texture2D, texture2);
+
+            BitmapData data2 = bitmap2.LockBits(new System.Drawing.Rectangle(0, 0, bitmap2.Width, bitmap2.Height),
+                ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data2.Width, data2.Height, 0,
+                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data2.Scan0);
+
+            bitmap2.UnlockBits(data2);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            */
 
             /// <summary>
             /// /////////////////////////////////////////////////////////////////
@@ -235,19 +257,38 @@ namespace GraphicsFinalProject
                                 temp = triangles[index + 0];
                             }
 
+                            if (triangles[index].branched)
+                            {
 
-                            GL.TexCoord2(0.0f, 0.0f);
-                            //GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
-                            GL.Vertex3(temp.vertex.x, temp.vertex.y, temp.vertex.z);
+                                GL.TexCoord2(0.0f, 0.0f);
+                                //GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
+                                GL.Vertex3(temp.vertex.x, temp.vertex.y, temp.vertex.z);
+                                GL.TexCoord2(0.0f, 0.99f);
 
-                            GL.TexCoord2(0.0f, 1.0f);
-                            //GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
-                            GL.Vertex3(temp.next.vertex.x, temp.next.vertex.y, temp.next.vertex.z);
+                                //GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
+                                GL.Vertex3(temp.next.vertex.x, temp.next.vertex.y, temp.next.vertex.z);
 
-                            GL.TexCoord2(1.0f, 0.0f);
-                            //GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
-                            GL.Vertex3(temp.prev.vertex.x, temp.prev.vertex.y, temp.prev.vertex.z);
+                                GL.TexCoord2(0.99f, 0.0f);
+                                //GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
+                                GL.Vertex3(temp.prev.vertex.x, temp.prev.vertex.y, temp.prev.vertex.z);
+                            }
+                            else
+                            {
 
+                                GL.TexCoord2(1.0f, 1.0f);
+                                //GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
+                                GL.Vertex3(temp.vertex.x, temp.vertex.y, temp.vertex.z);
+
+                                GL.TexCoord2(0.0f, 1.01f);
+                                //GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
+                                GL.Vertex3(temp.next.vertex.x, temp.next.vertex.y, temp.next.vertex.z);
+
+                                GL.TexCoord2(1.01f, 0.0f);
+                                //GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
+                                GL.Vertex3(temp.prev.vertex.x, temp.prev.vertex.y, temp.prev.vertex.z);
+                            }
+
+                            
                         }
                         else
                         {
@@ -327,7 +368,9 @@ namespace GraphicsFinalProject
         public void operationGreenThumb()
         {
             Corner seed = selectedCorner; // start at the seed corner s
-            
+
+            int backtrackNum = 0;
+
             // mark vertices as visited
             seed.next.vertex.visited = true;
             seed.prev.vertex.visited = true;
@@ -352,12 +395,23 @@ namespace GraphicsFinalProject
 
                     seed.next.textureCenter = true;
 
+                    if (backtrackNum > 1)
+                    {
+                        seed.opposite.branched = true;
+                        seed.opposite.next.branched = true;
+                        seed.opposite.prev.branched = true;
+                    }
+
+                    backtrackNum = 0;
                 }
                 else if (!seed.visited)
                 {
                     seed = seed.opposite; // go back one triangle
                     seed.textureCenter = true;
                     seed.prev.textureCenter = false;
+                    backtrackNum += 1;
+
+
                 }
 
                 seed = seed.right; // advance to next ring edge on the right
