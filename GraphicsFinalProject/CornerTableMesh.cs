@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Threading;
+
 //3rd Party Libs
 using OpenTK.Graphics.OpenGL;
 
@@ -76,8 +78,6 @@ namespace GraphicsFinalProject
             /// Setup OpenGL and load resources here.
             /// </summary>
             /// <param name="e">Not used.</param>
-
-            GL.ClearColor(Color.MidnightBlue);
             GL.Enable(EnableCap.Texture2D);
             
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
@@ -149,40 +149,44 @@ namespace GraphicsFinalProject
             {
                 if (hasNormals && Config.convertSettingToBool("model", "lighting"))
                 {
-                    GL.Enable(EnableCap.Lighting);
+                    /*GL.Enable(EnableCap.Lighting);
                     GL.Enable(EnableCap.Light0);
                     GL.Light(LightName.Light0, LightParameter.Position, new OpenTK.Vector4(Config.convertSettingToFloat("lights", "one_x"), Config.convertSettingToFloat("lights", "one_y"), Config.convertSettingToFloat("lights", "one_z"), Config.convertSettingToFloat("lights", "one_w")));
                     GL.Light(LightName.Light0, LightParameter.Ambient, new OpenTK.Vector4(Config.convertSettingToFloat("colours", "light_one_ambient_red"), Config.convertSettingToFloat("colours", "light_one_ambient_green"), Config.convertSettingToFloat("colours", "light_one_ambient_blue"), Config.convertSettingToFloat("colours", "light_one_ambient_alpha")));
                     GL.Light(LightName.Light0, LightParameter.Diffuse, new OpenTK.Vector4(Config.convertSettingToFloat("colours", "light_one_diffuse_red"), Config.convertSettingToFloat("colours", "light_one_diffuse_green"), Config.convertSettingToFloat("colours", "light_one_diffuse_blue"), Config.convertSettingToFloat("colours", "light_one_diffuse_alpha")));
-                    GL.Light(LightName.Light0, LightParameter.Specular, new OpenTK.Vector4(Config.convertSettingToFloat("colours", "light_one_specular_red"), Config.convertSettingToFloat("colours", "light_one_specular_green"), Config.convertSettingToFloat("colours", "light_one_specular_blue"), Config.convertSettingToFloat("colours", "light_one_specular_alpha"))); 
-
+                    GL.Light(LightName.Light0, LightParameter.Specular, new OpenTK.Vector4(Config.convertSettingToFloat("colours", "light_one_specular_red"), Config.convertSettingToFloat("colours", "light_one_specular_green"), Config.convertSettingToFloat("colours", "light_one_specular_blue"), Config.convertSettingToFloat("colours", "light_one_specular_alpha")));
+                    GL.Light(LightName.Light0, LightParameter.SpotExponent, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
+                    GL.LightModel(LightModelParameter.LightModelAmbient, new float[] { 0.2f, 0.2f, 0.2f, 1.0f });
+                    GL.LightModel(LightModelParameter.LightModelTwoSide, 1);
+                    GL.LightModel(LightModelParameter.LightModelLocalViewer, 1);
+                    */
                     for (int index = 0; index < triangles.Count; index += 3)
                     {
                         if (triangles[index].textured)
                         {
-                            GL.Normal3(triangles[index + 0].vertex.normal.X, triangles[index + 0].vertex.normal.Y, triangles[index + 0].vertex.normal.Z);
+                            //GL.Normal3(triangles[index + 0].vertex.normal.X, triangles[index + 0].vertex.normal.Y, triangles[index + 0].vertex.normal.Z);
                             GL.TexCoord2(triangles[index + 0].textureCoordinates.X, triangles[index + 0].textureCoordinates.Y);
                             GL.Vertex3(triangles[index + 0].vertex.x, triangles[index + 0].vertex.y, triangles[index + 0].vertex.z);
 
-                            GL.Normal3(triangles[index + 1].vertex.normal.X, triangles[index + 1].vertex.normal.Y, triangles[index + 1].vertex.normal.Z);
+                            //GL.Normal3(triangles[index + 1].vertex.normal.X, triangles[index + 1].vertex.normal.Y, triangles[index + 1].vertex.normal.Z);
                             GL.TexCoord2(triangles[index + 1].textureCoordinates.X, triangles[index + 1].textureCoordinates.Y);
                             GL.Vertex3(triangles[index + 1].vertex.x, triangles[index + 1].vertex.y, triangles[index + 1].vertex.z);
 
-                            GL.Normal3(triangles[index + 2].vertex.normal.X, triangles[index + 2].vertex.normal.Y, triangles[index + 2].vertex.normal.Z);
+                            //GL.Normal3(triangles[index + 2].vertex.normal.X, triangles[index + 2].vertex.normal.Y, triangles[index + 2].vertex.normal.Z);
                             GL.TexCoord2(triangles[index + 2].textureCoordinates.X, triangles[index + 2].textureCoordinates.Y);
                             GL.Vertex3(triangles[index + 2].vertex.x, triangles[index + 2].vertex.y, triangles[index + 2].vertex.z);
                         }
                         else
                         {
-                            GL.Normal3(triangles[index + 0].vertex.normal.X, triangles[index + 0].vertex.normal.Y, triangles[index + 0].vertex.normal.Z);
+                            //GL.Normal3(triangles[index + 0].vertex.normal.X, triangles[index + 0].vertex.normal.Y, triangles[index + 0].vertex.normal.Z);
                             GL.Color4(triangles[index + 0].colour.red, triangles[index + 0].colour.green, triangles[index + 0].colour.blue, triangles[index + 0].colour.alpha);
                             GL.Vertex3(triangles[index + 0].vertex.x, triangles[index + 0].vertex.y, triangles[index + 0].vertex.z);
 
-                            GL.Normal3(triangles[index + 1].vertex.normal.X, triangles[index + 1].vertex.normal.Y, triangles[index + 1].vertex.normal.Z);
+                            //GL.Normal3(triangles[index + 1].vertex.normal.X, triangles[index + 1].vertex.normal.Y, triangles[index + 1].vertex.normal.Z);
                             GL.Color4(triangles[index + 1].colour.red, triangles[index + 1].colour.green, triangles[index + 1].colour.blue, triangles[index + 1].colour.alpha);
                             GL.Vertex3(triangles[index + 1].vertex.x, triangles[index + 1].vertex.y, triangles[index + 1].vertex.z);
 
-                            GL.Normal3(triangles[index + 2].vertex.normal.X, triangles[index + 2].vertex.normal.Y, triangles[index + 2].vertex.normal.Z);
+                            //GL.Normal3(triangles[index + 2].vertex.normal.X, triangles[index + 2].vertex.normal.Y, triangles[index + 2].vertex.normal.Z);
                             GL.Color4(triangles[index + 2].colour.red, triangles[index + 2].colour.green, triangles[index + 2].colour.blue, triangles[index + 2].colour.alpha);
                             GL.Vertex3(triangles[index + 2].vertex.x, triangles[index + 2].vertex.y, triangles[index + 2].vertex.z);
                         }
@@ -334,6 +338,8 @@ namespace GraphicsFinalProject
 
             do
             {
+                Thread.Sleep(Config.convertSettingToInt("model", "sleep_time"));
+
 
                 if (!seed.vertex.visited)
                 {
