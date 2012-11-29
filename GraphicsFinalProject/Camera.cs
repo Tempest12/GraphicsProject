@@ -46,12 +46,12 @@ namespace GraphicsFinalProject
 
         public void zoomIn()
         {
-            position.Z -= Config.convertSettingToFloat("camera", "delta_zoom");
+            //position.Z -= Config.convertSettingToFloat("camera", "delta_zoom");
         }
 
         public void zoomOut()
         {
-            position.Z += Config.convertSettingToFloat("camera", "delta_zoom");
+            //position.Z += Config.convertSettingToFloat("camera", "delta_zoom");
         }
 
         public void rotate(float xRotationChange, float yRotationChange, float zRotationChange)

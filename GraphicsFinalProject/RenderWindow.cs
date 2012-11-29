@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 //My Imports
+using System.Threading;
 
 //3rd Party Imports
 using OpenTK;
@@ -37,9 +38,7 @@ namespace GraphicsFinalProject
             GL.DepthFunc(DepthFunction.Less);
             GL.ClearColor(Config.convertSettingToFloat("colours", "bg_red"), Config.convertSettingToFloat("colours", "bg_green"), Config.convertSettingToFloat("colours", "bg_red"), Config.convertSettingToFloat("colours", "bg_alpha"));
 
-            GL.LightModel(LightModelParameter.LightModelAmbient, Config.convertSettingToFloat("lights", "ambient_light_level"));
-            //GL.ShadeModel(ShadingModel.Smooth);
-            GL.Enable(EnableCap.ColorMaterial);
+            //GL.LightModel(LightModelParameter.LightModelAmbient, Config.convertSettingToFloat("lights", "ambient_light_level"));
             //GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
 
@@ -166,7 +165,10 @@ namespace GraphicsFinalProject
                 // Initiate Operation Green Thumb
                 case Key.G:
 
-                    models[0].operationGreenThumb();
+                    Thread meshThread = new Thread(new ThreadStart(models[0].operationGreenThumb));
+
+                    meshThread.Start();
+                    //models[0].operationGreenThumb();
 
                     break;
 
