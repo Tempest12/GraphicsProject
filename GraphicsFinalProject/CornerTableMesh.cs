@@ -80,13 +80,10 @@ namespace GraphicsFinalProject
             /// Setup OpenGL and load resources here.
             /// </summary>
             /// <param name="e">Not used.</param>
-<<<<<<< HEAD
-
             
             // texture/bitmap
             GL.ClearColor(Color.MidnightBlue);
-=======
->>>>>>> 63a2aaad54d732ec9fc6e58c39fddf72e8981011
+
             GL.Enable(EnableCap.Texture2D);
             
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
